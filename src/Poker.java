@@ -36,11 +36,26 @@ public class Poker {
 		}
 		
 		String bet = "0";
+		String initial = "0";
 		
-		while (!isNumeric(bet) || Integer.parseInt(bet) < 1 || Integer.parseInt(bet) > 100000) {
-			System.out.print("\nHow much would you like to bet? Please enter a positive integer no greater than 100,000.\n\t> ");
+		System.out.print("\nPlease enter your name.\n\t> ");
+		String name = in.nextLine();
+		
+		while (!isNumeric(initial) || Integer.parseInt(initial) < 1 || Integer.parseInt(initial) > 100000) {
+			System.out.print("\nHow many chips would you like to start with? Please enter a positive integer no greater than 100,000.\n\t> ");
+			initial = in.nextLine();
+		}
+		int chips = Integer.parseInt(initial);
+		
+		boolean play = true;
+		while (play) {
+		
+		bet = "0";
+		while (!isNumeric(bet) || Integer.parseInt(bet) < 1 || Integer.parseInt(bet) > chips) {
+			System.out.print("\nHow much would you like to bet? Please enter a positive integer less than or equal to the number of chips you have.\n\t> ");
 			bet = in.nextLine();
 		}
+		chips -= Integer.parseInt(bet);
 		
 		String[] ranks = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 		String[] suits = {"Hearts", "Diamonds", "Spades", "Clubs"};
@@ -131,7 +146,23 @@ public class Poker {
 			multiplier = 250;
 		}
 		
-		System.out.println("Result:\n" + phrase + "\nMultiplier = " + multiplier + ".\nPayout = " + (multiplier * Integer.parseInt(bet)) + ".\nThank you for playing!");
+		chips += (multiplier * Integer.parseInt(bet));
+		System.out.println("Result:\n" + phrase + "\nMultiplier = " + multiplier + ".\nPayout = " + (multiplier * Integer.parseInt(bet)));
+		String decision = "f";
+		System.out.println("\nName: " + name + "\nChips: " + chips);
+		while (!decision.equals("y") && !decision.equals("n")) {
+			System.out.print("\nPlay again? (y/n)\n\t> ");
+			decision = in.nextLine();
+		}
+		if (decision.equals("n")) {
+			System.out.println("Thank you for playing!");
+			play = false;
+		} else if (chips < 1) {
+			System.out.println("You ran out of chips!\nThanks for playing!");
+			play = false;
+		}
+		
+		}
 		
 		in.close();
 	}
